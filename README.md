@@ -8,14 +8,7 @@ A Retrieval-Augmented Generation (RAG) agent built with Pydantic AI, integrated 
 - 🔍 **RAG Pipeline** - Document search and retrieval from GitHub repositories
 - 📊 **OpenInference Tracing** - Full observability with Phoenix/OpenTelemetry
 - 💬 **Streamlit UI** - Interactive chat interface
-- 📝 **Conversation Logging** - JSON logs of all interactions
 - 🛠️ **Tool Tracing** - Automatic tracing of search tool calls
-
-## Architecture
-
-The project combines functionality from two sources:
-- **APP folder**: RAG agent with Pydantic AI
-- **CODE folder**: OpenInference tracing implementation
 
 ### Key Components
 
