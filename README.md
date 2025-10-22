@@ -72,18 +72,33 @@ python -m phoenix.server.main serve
 
 Phoenix will be available at `http://localhost:6006`
 
-### Run the Streamlit app
+### Run the Streamlit App
 
+**⚠️ IMPORTANT: You MUST use `streamlit run` command, not `python app.py`**
+
+**Using UV (recommended):**
 ```bash
 uv run streamlit run app.py
 ```
 
-Or if using pip:
+**Using system streamlit:**
 ```bash
 streamlit run app.py
 ```
 
 The application will open in your browser at `http://localhost:8501`
+
+### ❌ Common Mistakes - DO NOT USE:
+```bash
+# ❌ WRONG - Will cause "Session state does not function" error
+python app.py
+
+# ❌ WRONG - Will cause "Session state does not function" error  
+uv run app.py
+
+# ✅ CORRECT - Use streamlit run
+uv run streamlit run app.py
+```
 
 ## How It Works
 
@@ -199,6 +214,22 @@ Edit the `SYSTEM_PROMPT_TEMPLATE` in `search_agent.py`
 
 ## Troubleshooting
 
+### "Session state does not function" Error
+
+**Error Message:** `Session state does not function when running a script without 'streamlit run'`
+
+**Cause:** You're running the app with `python app.py` or `uv run app.py` instead of using Streamlit's runner.
+
+**Solution:** Always use the `streamlit run` command:
+```bash
+# Correct commands:
+uv run streamlit run app.py
+# or
+streamlit run app.py
+```
+
+Streamlit requires its own runner to initialize session state, set up the web server, and provide the interactive UI. Running the script directly with Python will not work.
+
 ### Phoenix Connection Issues
 
 If traces aren't showing in Phoenix:
@@ -249,4 +280,3 @@ with tracer.start_as_current_span("my-operation") as span:
 - [Phoenix Documentation](https://docs.arize.com/phoenix)
 - [OpenInference Specification](https://github.com/Arize-ai/openinference)
 - [OpenTelemetry Python](https://opentelemetry.io/docs/languages/python/)
-
