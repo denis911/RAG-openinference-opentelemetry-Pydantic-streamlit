@@ -250,10 +250,3 @@ with tracer.start_as_current_span("my-operation") as span:
 - [OpenInference Specification](https://github.com/Arize-ai/openinference)
 - [OpenTelemetry Python](https://opentelemetry.io/docs/languages/python/)
 
-## License
-
-[Your License Here]
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
