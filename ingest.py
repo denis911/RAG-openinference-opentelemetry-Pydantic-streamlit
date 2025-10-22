@@ -6,30 +6,31 @@ import frontmatter
 from minsearch import Index
 
 
-def read_repo_data(repo_owner, repo_name):
-    url = f'https://codeload.github.com/{repo_owner}/{repo_name}/zip/refs/heads/main'
-    resp = requests.get(url)
-
+def read_repo_data(repositories):
     repository_data = []
 
-    zf = zipfile.ZipFile(io.BytesIO(resp.content))
+    for repo_owner, repo_name in repositories:
+        url = f'https://codeload.github.com/{repo_owner}/{repo_name}/zip/refs/heads/main'
+        resp = requests.get(url)
 
-    for file_info in zf.infolist():
-        filename = file_info.filename.lower()
+        zf = zipfile.ZipFile(io.BytesIO(resp.content))
 
-        if not (filename.endswith('.md') or filename.endswith('.mdx')):
-            continue
+        for file_info in zf.infolist():
+            filename = file_info.filename.lower()
 
-        with zf.open(file_info) as f_in:
-            content = f_in.read()
-            post = frontmatter.loads(content)
-            data = post.to_dict()
+            if not (filename.endswith('.md') or filename.endswith('.mdx')):
+                continue
 
-            _, filename_repo = file_info.filename.split('/', maxsplit=1)
-            data['filename'] = filename_repo
-            repository_data.append(data)
+            with zf.open(file_info) as f_in:
+                content = f_in.read()
+                post = frontmatter.loads(content)
+                data = post.to_dict()
 
-    zf.close()
+                _, filename_repo = file_info.filename.split('/', maxsplit=1)
+                data['filename'] = filename_repo
+                repository_data.append(data)
+
+        zf.close()
 
     return repository_data
 
@@ -64,13 +65,12 @@ def chunk_documents(docs, size=2000, step=1000):
 
 
 def index_data(
-        repo_owner,
-        repo_name,
+        repositories,
         filter=None,
         chunk=False,
         chunking_params=None,
     ):
-    docs = read_repo_data(repo_owner, repo_name)
+    docs = read_repo_data(repositories)
 
     if filter is not None:
         docs = [doc for doc in docs if filter(doc)]

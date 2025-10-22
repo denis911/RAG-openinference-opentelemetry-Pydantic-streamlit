@@ -21,15 +21,17 @@ print(f"Using OpenAI key: {api_key[:8]}...")  # test (don't print full key!)
 # --- Initialization ---
 @st.cache_resource
 def init_agent():
-    repo_owner = "DataTalksClub"
-    repo_name = "faq"
+    repositories = [
+        ("DataTalksClub", "faq"),
+        # Add more repositories here as needed
+    ]
 
     def filter(doc):
         return 'data-engineering' in doc['filename']
 
-    st.write("🔄 Indexing repo...")
-    index = ingest.index_data(repo_owner, repo_name, filter=filter)
-    agent = search_agent.init_agent(index, repo_owner, repo_name)
+    st.write("🔄 Indexing repositories...")
+    index = ingest.index_data(repositories, filter=filter)
+    agent = search_agent.init_agent(index, repositories)
     return agent
 
 
